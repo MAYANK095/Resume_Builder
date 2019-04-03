@@ -101,11 +101,32 @@
                     <h2 class="fs-title">Skills And Awards</h2>
                     <h3 class="fs-subtitle">Lets Us Know About Your Skills and Achivements</h3>
                     <label for="skills">Add Your Skills</label>
-                    <input type="text" name="skills" placeholder="Skills" id="skills"/>
+                    <div class="uskills">
+                        <input type="text" name="skills" placeholder="Skills" id="skills"/>
+                        <input type="button" name="addSkills" class="action-button addSkills" value="ADD"/>  
+                        <input type="button" name="delSkills" class="action-button delSkills" value="Remove"/>                          
+                    </div>
+                    <div class="skillsForm"></div>
+                   <input type="button" value="Add Skills" class="action-button" id="addMoreSkills">
+                   <br>                    
                     <label for="activities">Tell About Your Activities</label>
-                    <input type="text" name="activities" placeholder="Activities" id="activities"/>
-                    <label for="achievements">Mention Yours Awards and Achivements</label>
-                    <input type="text" name="achievements" placeholder="Awards and Achievements" id="achievements" style="text-align:left"/>
+                    <div class="uactivities">
+                        <input type="text" name="activities" placeholder="Activities" id="activities"/>
+                        <input type="button" name="addactivities" class="action-button addactivities" value="ADD"/>  
+                        <input type="button" name="delactivities" class="action-button delactivities" value="Remove"/>  
+                    </div>
+                    <div class="activitiesForm"></div>
+                    <input type="button" value="Add Activities" class="action-button" id="addAct">
+                   <br>                    
+                    <label for="awards">Mention Yours Awards and Achivements</label>
+                    <div class="uachievements">
+                        <input type="text" name="achievements" placeholder="Awards and Achievements" id="achievements" style="text-align:left"/>
+                        <input type="button" name="addachievements" class="action-button addachievements" value="ADD"/>  
+                        <input type="button" name="delachievements" class="action-button delachievements" value="Remove"/> 
+                    </div>
+                    <div class="achievementsForm"></div>
+                    <input type="button" value="Add More" class="action-button" id="addach">
+                    <br>
                     <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
                     <input type="button" name="next" class="next action-button" value="Next"/>
             </fieldset>

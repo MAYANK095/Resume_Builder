@@ -171,5 +171,71 @@ def delWE():
     conn.close()
     return json.dumps({'status':200})
 
+@app.route('/addSkills', methods = ['GET','POST'])
+def addSkills():
+    skills = request.form['skills']
+    conn = sql.connect('static/resumebuilder.db')
+    cur = conn.cursor()
+    cur.execute("INSERT INTO skills (skills,uid)VALUES (?,?)",(skills,session['uid']))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return json.dumps({'status':200})
+
+@app.route('/delSkills', methods = ['GET','POST'])
+def delSkills():
+    skills = request.form['skills']
+    conn = sql.connect('static/resumebuilder.db')
+    cur = conn.cursor()
+    cur.execute("DELETE from skills where uid = ? and skills = ?",(session['uid'],skills))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return json.dumps({'status':200})
+
+@app.route('/addactivities', methods = ['GET','POST'])
+def addactivities():
+    activities = request.form['activities']
+    conn = sql.connect('static/resumebuilder.db')
+    cur = conn.cursor()
+    cur.execute("INSERT INTO activities (activities,uid)VALUES (?,?)",(activities,session['uid']))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return json.dumps({'status':200})
+
+@app.route('/delactivities', methods = ['GET','POST'])
+def delactivities():
+    activities = request.form['activities']
+    conn = sql.connect('static/resumebuilder.db')
+    cur = conn.cursor()
+    cur.execute("DELETE from activities where uid = ? and activities = ?",(session['uid'],activities))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return json.dumps({'status':200})
+
+@app.route('/addachievements', methods = ['GET','POST'])
+def addachievements():
+    achievements = request.form['achievements']
+    conn = sql.connect('static/resumebuilder.db')
+    cur = conn.cursor()
+    cur.execute("INSERT INTO achievements (achievements,uid)VALUES (?,?)",(achievements,session['uid']))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return json.dumps({'status':200})
+
+@app.route('/delachievements', methods = ['GET','POST'])
+def delachievements():
+    achievements = request.form['achievements']
+    conn = sql.connect('static/resumebuilder.db')
+    cur = conn.cursor()
+    cur.execute("DELETE from achievements where uid = ? and achievements = ?",(session['uid'],achievements))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return json.dumps({'status':200})
+
 if __name__=="__main__":
 	app.run(debug=True,port=5000)
