@@ -152,12 +152,6 @@ $('#basicDetails').click(function (event) {
 		$.ajax({
 			url: '/addbasic',
 			data: $('form').serialize(),
-			/*data : {
-				uname : $('#uname').val(),
-				email : $('#uemail').val(),
-		    mobno : $('#umobno').val(),
-		    objective : $('#uobjective').val()
-			},*/
 			type: 'POST',
 			success: function(response){
 				console.log("success");
@@ -169,9 +163,36 @@ $('#basicDetails').click(function (event) {
 		nextt('#basicDetails');
 	}
 });
+$('#personalDetails').click(function (event) {
+	var fname = $('#fname').val();
+	var dob = $('#dob').val();
+	var sex = $('#sex').val();
+	var nationality = $('#nationality').val();
+	$.ajax({
+		url: '/addPersonal',
+		data : {
+			fname : $('#fname').val(),
+			dob : $('#dob').val(),
+			sex : $('#sex').val(),
+			nationality : $('#nationality').val()
+		},
+		type: 'POST',
+		success: function(response){
+			console.log("success");
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+	nextt('#personalDetails');
+});
 $( document ).ready(function() {
 	$("#addCourse").click(function(){
 		$('.acadDetails:first').clone(true).find("input:text").val("").end().appendTo('.acadFormD');
+	});
+
+	$("#addHAI").click(function(){
+		$('.uhobbies:first').clone(true).find("input:text").val("").end().appendTo('.hobbiesForm');
 	});
 
 	$("#addAct").click(function(){
@@ -407,6 +428,45 @@ $( document ).ready(function() {
 			url: '/delachievements',
 			data : {
 				achievements : $('#achievements', $(this).closest("div.uachievements")).val()
+			},
+			type: 'POST',
+			success: function(response){
+				console.log("success");
+			},
+			error: function(error){
+				console.log(error);
+			}
+		});
+		$(this).parent().remove();
+	});
+
+	$(".addhobbies").click(function(){
+		var hobbies = $('#hobbies', $(this).closest("div.uhobbies")).val();
+		if (hobbies == ""){
+			alert("You have not entered any hobby.")
+		} else{
+			$.ajax({
+				url: '/addhobbies',
+				data : {
+					hobbies : $('#hobbies', $(this).closest("div.uhobbies")).val()
+				},
+				type: 'POST',
+				success: function(response){
+					console.log("success");
+				},
+				error: function(error){
+					console.log(error);
+				}
+			});
+		}
+	});
+
+	$(".delhobbies").click(function(){
+		var hobbies = $('#hobbies', $(this).closest("div.uhobbies")).val();	
+		$.ajax({
+			url: '/delhobbies',
+			data : {
+				hobbies : $('#hobbies', $(this).closest("div.uhobbies")).val()
 			},
 			type: 'POST',
 			success: function(response){
