@@ -25,6 +25,10 @@ def signup():
                 if a != None:
                     return "<h1>User Already Exist</h1>"
                 cur.execute("INSERT INTO credentials (name,password,email)VALUES (?,?,?)",(name,password,emailid))
+                cur.execute("select uid from credentials where email = ?",(emailid,))
+                a = str(cur.fetchone())
+                a = a[1:-2]
+                cur.execute("INSERT INTO user (uemail,uid) VALUES (?,?)",(emailid,a))
                 con.commit()
                 cur.close()
                 con.close()
@@ -93,13 +97,13 @@ def addbasic():
     address = request.form['uaddress'] if request.form['uaddress'] else "NULL" 
     linkedin = request.form['ulinkedin'] if request.form['ulinkedin'] else "NULL" 
     portfolio = request.form['uportfolio'] if request.form['uportfolio'] else "NULL" 
+    print(session['uid'])
     conn = sql.connect('static/resumebuilder.db')
     cur = conn.cursor()
-    cur.execute("INSERT INTO user (uname,uemail,umobno,uaddress,ulinkedin,uportfolio,uobjective)VALUES (?,?,?,?,?,?,?)",(name,email,mob,address,linkedin,portfolio,objective))
+    cur.execute("UPDATE user SET uname = ?, uemail = ?, umobno = ?, uaddress = ?, ulinkedin = ?, uportfolio = ?, uobjective = ? where uid = ?",(name,email,mob,address,linkedin,portfolio,objective,session['uid']))
     conn.commit()
     cur.close()
     conn.close()
-    #return json.dumps({'status':200, 'edit':edit, 'movid':mov_id})
     return json.dumps({'status':200})
 
 @app.route('/addPersonal', methods = ['GET','POST'])
@@ -114,7 +118,6 @@ def addPersonal():
     conn.commit()
     cur.close()
     conn.close()
-    #return json.dumps({'status':200, 'edit':edit, 'movid':mov_id})
     return json.dumps({'status':200})
 
 @app.route('/addAcad', methods = ['GET','POST'])
@@ -143,7 +146,6 @@ def addAcad():
 
 @app.route('/delAcad', methods = ['GET','POST'])
 def delAcad():
-    print("WHYYYYY")
     course = request.form['course']
     degree = request.form['degree']
     conn = sql.connect('static/resumebuilder.db')
@@ -273,6 +275,52 @@ def delhobbies():
     cur.close()
     conn.close()
     return json.dumps({'status':200})
+
+@app.route('/addref', methods = ['GET','POST'])
+def addref():
+    rname = request.form['rname']
+    rorg = request.form['rorg'] 
+    rnum = request.form['rnum']
+    remail = request.form['remail']
+    print(rname,rorg,rnum,remail,sep="")
+    conn = sql.connect('static/resumebuilder.db')
+    cur = conn.cursor()
+    cur.execute("INSERT INTO ref (rname,rorg,rnum,remail,uid)VALUES (?,?,?,?,?)",(rname,rorg,rnum,remail,session['uid']))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return json.dumps({'status':200})
+
+@app.route('/delref', methods = ['GET','POST'])
+def delref():
+    rname = request.form['rname']
+    rorg = request.form['rorg'] 
+    rnum = request.form['rnum']
+    remail = request.form['remail']
+    conn = sql.connect('static/resumebuilder.db')
+    cur = conn.cursor()
+    cur.execute("DELETE from ref where uid = ? and rname = ? and rorg = ? and remail=?",(session['uid'],rname,rorg,remail))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return json.dumps({'status':200})
+
+@app.route("/resume")
+def resume():
+    if 'user' in session:
+        def dict_factory(cursor, row):
+            d = {}
+            for idx, col in enumerate(cursor.description):
+                d[col[0]] = row[idx]
+            return d
+        con = sql.connect("static/resumebuilder.db")
+        con.row_factory = dict_factory
+        cur = con.cursor()
+        cur.execute("select * from user where uid = ?",(session['uid'],))
+        details = cur.fetchall()
+        print(details)
+        return render_template("resume.html",userDetails = details)
+    return redirect("/")
 
 if __name__=="__main__":
 	app.run(debug=True,port=5000)
